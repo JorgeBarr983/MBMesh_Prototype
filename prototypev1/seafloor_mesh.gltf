@@ -1,0 +1,67 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "mbmesh_prototype"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [0]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0
+          },
+          "indices": 1
+        }
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "byteOffset": 0,
+      "componentType": 5126,
+      "count": 5000,
+      "type": "VEC3",
+      "max": [490, 990, -66.5687],
+      "min": [0, 0, -119.952]
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 0,
+      "componentType": 5125,
+      "count": 29106,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 60000,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 60000,
+      "byteLength": 116424,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "seafloor_mesh.bin",
+      "byteLength": 176424
+    }
+  ]
+}

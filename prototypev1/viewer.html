@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MB-System Seafloor Mesh Viewer</title>
+    <script type='text/javascript' src='https://www.x3dom.org/download/x3dom.js'></script>
+    <link rel='stylesheet' type='text/css' href='https://www.x3dom.org/download/x3dom.css'/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .viewer-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        x3d {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .info {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .info h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .controls {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .stat-box {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>🌊 MB-System Seafloor Mesh Viewer</h1>
+            <div class="subtitle">Prototype: Swath Bathymetry to 3D glTF Mesh</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="viewer-container">
+            <h2>3D Seafloor Mesh</h2>
+            <x3d>
+                <scene>
+                    <viewpoint position='250 250 300' orientation='1 0 0 -0.5'></viewpoint>
+                    
+                    <!-- Lighting -->
+                    <directionalLight direction='0 -1 -1' intensity='0.8'></directionalLight>
+                    <directionalLight direction='0 1 1' intensity='0.3'></directionalLight>
+                    
+                    <!-- The seafloor mesh -->
+                    <transform translation='0 0 0'>
+                        <inline url='seafloor_mesh.gltf'></inline>
+                    </transform>
+                    
+                    <!-- Coordinate axes for reference -->
+                    <transform translation='0 0 0'>
+                        <!-- X axis (red) -->
+                        <shape>
+                            <appearance>
+                                <material diffuseColor='1 0 0'></material>
+                            </appearance>
+                            <indexedLineSet coordIndex='0 1 -1'>
+                                <coordinate point='0 0 0, 100 0 0'></coordinate>
+                            </indexedLineSet>
+                        </shape>
+                        
+                        <!-- Y axis (green) -->
+                        <shape>
+                            <appearance>
+                                <material diffuseColor='0 1 0'></material>
+                            </appearance>
+                            <indexedLineSet coordIndex='0 1 -1'>
+                                <coordinate point='0 0 0, 0 100 0'></coordinate>
+                            </indexedLineSet>
+                        </shape>
+                        
+                        <!-- Z axis (blue) -->
+                        <shape>
+                            <appearance>
+                                <material diffuseColor='0 0 1'></material>
+                            </appearance>
+                            <indexedLineSet coordIndex='0 1 -1'>
+                                <coordinate point='0 0 0, 0 0 100'></coordinate>
+                            </indexedLineSet>
+                        </shape>
+                    </transform>
+                </scene>
+            </x3d>
+            
+            <div class="controls">
+                <strong>Controls:</strong>
+                <button onclick="resetView()">Reset View</button>
+                <button onclick="toggleAxes()">Toggle Axes</button>
+                <button onclick="toggleWireframe()">Toggle Wireframe</button>
+                <br>
+                <small>💡 Use mouse to rotate (drag), zoom (scroll), and pan (right-click drag)</small>
+            </div>
+        </div>
+        
+        <div class="info">
+            <h2>About This Prototype</h2>
+            <p>
+                This prototype demonstrates the core functionality of the proposed <code>mbmesh</code> program
+                for MB-System. It converts simulated swath bathymetry data directly into a 3D mesh in glTF format,
+                which can be viewed in any modern web browser.
+            </p>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-label">Data Format</div>
+                    <div class="stat-value">glTF 2.0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Viewer</div>
+                    <div class="stat-value">X3DOM</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Grid Size</div>
+                    <div class="stat-value">50×100</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Features</div>
+                    <div class="stat-value">Ridge + Seamount</div>
+                </div>
+            </div>
+            
+            <h3>Key Features</h3>
+            <ul>
+                <li>Direct swath-to-mesh conversion (bypasses 2D gridding)</li>
+                <li>glTF 2.0 output format (industry standard)</li>
+                <li>Web browser visualization (no special software required)</li>
+                <li>Simulated bathymetry with ridge and seamount features</li>
+                <li>Foundation for 3D Tiles hierarchical representation</li>
+            </ul>
+            
+            <h3>Next Steps</h3>
+            <ul>
+                <li>Integration with actual MB-System swath data reading</li>
+                <li>Draco compression for efficient file sizes</li>
+                <li>Level-of-detail (LOD) mesh generation</li>
+                <li>OGC 3D Tiles 1.1 hierarchical tiling</li>
+                <li>Texture mapping for bathymetry coloring</li>
+                <li>Support for cliffs, overhangs, and caves</li>
+            </ul>
+            
+            <h3>References</h3>
+            <ul>
+                <li><a href="https://github.com/dwcaress/MB-System/issues/1559" target="_blank">GitHub Issue #1559</a></li>
+                <li><a href="https://github.com/CesiumGS/3d-tiles" target="_blank">OGC 3D Tiles Specification</a></li>
+                <li><a href="https://www.x3dom.org/" target="_blank">X3DOM Documentation</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        function resetView() {
+            // Reset to default viewpoint
+            var vp = document.querySelector('viewpoint');
+            vp.setAttribute('position', '250 250 300');
+            vp.setAttribute('orientation', '1 0 0 -0.5');
+        }
+        
+        function toggleAxes() {
+            // Toggle visibility of coordinate axes
+            var axes = document.querySelector('transform[translation="0 0 0"]');
+            if (axes.style.display === 'none') {
+                axes.style.display = '';
+            } else {
+                axes.style.display = 'none';
+            }
+        }
+        
+        function toggleWireframe() {
+            // This would require more complex X3DOM manipulation
+            alert('Wireframe toggle would be implemented in production version');
+        }
+    </script>
+</body>
+</html>
