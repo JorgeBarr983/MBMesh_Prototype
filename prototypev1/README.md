@@ -189,12 +189,3 @@ Input: Swath Bathymetry Data
 ## License
 
 This prototype is intended for development and demonstration purposes as part of the MB-System project.
-
-## Contributing
-
-This prototype supports development of the `mbmesh` program for MB-System. For questions or contributions, see [GitHub Issue #1559](https://github.com/dwcaress/MB-System/issues/1559).
-
-## Contact
-
-Project Mentor: See MB-System repository
-Project Repository: https://github.com/dwcaress/MB-System
